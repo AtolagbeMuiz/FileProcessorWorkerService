@@ -80,14 +80,17 @@ namespace FileProcessor.BackgroundService
             XmlNode encounterDateNode = xmlDoc.SelectSingleNode("medisight/encounterDate");
             XmlNode documentTypeNode = xmlDoc.SelectSingleNode("medisight/documentType");
 
-            DateTime encouterDate = DateTime.ParseExact(encounterDateNode.InnerText.ToString(), "yyyy/MM/dd hh:mm:ss tt", CultureInfo.InvariantCulture);
-            var encounterDateddmmyyFormat = encouterDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime encounterDateTme;
+            DateTime.TryParseExact(encounterDateNode.InnerText, "yyyyMMddHHmmss", null,
+                System.Globalization.DateTimeStyles.None, out encounterDateTme);
+            
+            string formattedDate = encounterDateTme.ToString("dd-MM-yyyy");
 
             var xmlObject = new XMLObject
             {
                 mrn = mrnNode.InnerText,
                 documentType = documentTypeNode.InnerText,
-                encounterDate = encounterDateddmmyyFormat
+                encounterDate = formattedDate
             };
 
            
